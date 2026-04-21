@@ -112,12 +112,16 @@ FEATURES    = ['danceability', 'energy', 'valence', 'tempo',
                'acousticness', 'speechiness', 'loudness', 'instrumentalness']
 
 # ── Load ML artifacts ──────────────────────────────────────────────────────────
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 @st.cache_resource
 def load_artifacts():
-    model  = joblib.load('model.pkl.gz')
-    scaler = joblib.load('scaler.pkl')
-    le     = joblib.load('label_encoder.pkl')
-    pca    = joblib.load('pca.pkl')
+    model  = joblib.load(os.path.join(BASE_DIR, 'model.pkl.gz'))
+    scaler = joblib.load(os.path.join(BASE_DIR, 'scaler.pkl'))
+    le     = joblib.load(os.path.join(BASE_DIR, 'label_encoder.pkl'))
+    pca    = joblib.load(os.path.join(BASE_DIR, 'pca.pkl'))
     return model, scaler, le, pca
 
 model, scaler, le, pca = load_artifacts()
@@ -341,8 +345,9 @@ elif page == "Visualize":
         plt.close()
 
     with tab2:
-        if os.path.exists('pca_plot.png'):
-            st.image('pca_plot.png')
+        pca_path = os.path.join(BASE_DIR, 'pca_plot.png')
+        if os.path.exists(pca_path):
+            st.image(pca_path)
         else:
             st.info("Place pca_plot.png in the app/ folder.")
 
@@ -354,5 +359,6 @@ elif page == "Visualize":
             'Notes':    ['Simple baseline', 'Linear boundary', 'Best — used in production']
         })
         st.dataframe(comparison, use_container_width=True, hide_index=True)
-        if os.path.exists('confusion_matrices.png'):
-            st.image('confusion_matrices.png')
+        conf_path = os.path.join(BASE_DIR, 'confusion_matrices.png')
+        if os.path.exists(conf_path):
+            st.image(conf_path)
