@@ -114,7 +114,7 @@ FEATURES    = ['danceability', 'energy', 'valence', 'tempo',
 # ── Load ML artifacts ──────────────────────────────────────────────────────────
 @st.cache_resource
 def load_artifacts():
-    model  = joblib.load('model.pkl')
+    model  = joblib.load('model.pkl.gz')
     scaler = joblib.load('scaler.pkl')
     le     = joblib.load('label_encoder.pkl')
     pca    = joblib.load('pca.pkl')
